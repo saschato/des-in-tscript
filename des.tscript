@@ -292,4 +292,40 @@ function encryption_key_schedule(key) {
     }
 }
 
-encryption_key_schedule([1234,15]);
+function hex(inp){
+	var consts = ["0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"];
+	var string = "";
+	for var i in 0:8 do {
+		var temp = (inp // 2^(4*i)) and 15;
+		string += consts[temp];
+	}
+	return string;
+}
+
+function convert(inp) {
+	var a;
+	var b;
+	var c;
+	var d;
+	#a = (inp and 0x000000ff) << 24u;
+	#b = (inp and 0x0000ff00) << 8u;
+	#c = (inp and 0x00ff0000) >> 8u;
+	#d = (inp and 0xff000000) >> 24u;
+	#b0 | b1 | b2 | b3;
+}
+
+function encrypt(plain,key) {
+    encryption_key_schedule(key);
+
+    plain = initial_permutation(plain);
+
+    for var i in 0:16 do {
+		var temp_right_site = f_function(plain[1], i);
+        var temp_left_site = plain[0] xor temp_right_site;
+
+        plain[0] = plain[1];
+        plain[1] = temp_left_site;
+    }
+
+}
+encrypt([1885434739,2003792484],[1885434739,2003792484]);
