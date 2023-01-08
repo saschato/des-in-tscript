@@ -272,14 +272,13 @@ function leftshift(key, round) {
 	
     if left_shifts[round] == 2 then {
         temp = temp or ((key * 2^2) and 268435452);
-        temp = temp or (key // 2^26);
+        temp = temp or (key // 2^26) and 3;
     }
     else {
         temp = temp or ((key * 2) and 268435454);
-        temp = temp or (key // 2^27);
+        temp = temp or (key // 2^27) and 1;
 		
     }
-
     return temp;
 }
 
@@ -288,6 +287,7 @@ function encryption_key_schedule(key) {
     for var i in 0:16 do {
 		permuted_key[0] = leftshift(permuted_key[0], i);
         permuted_key[1] = leftshift(permuted_key[1], i);
+		print(hex(permuted_key[0]) + " " + hex(permuted_key[1]));
         key_permuted_choice_2(permuted_key, i);
     }
 }
@@ -309,6 +309,10 @@ function encrypt(plain,key) {
     encryption_key_schedule(key);
 
     plain = initial_permutation(plain);
+	
+	for var i in 0:16 do {
+		print(hex(keys[i][0]) +  "  " + hex(keys[i][1]));	
+	}
 
     for var i in 0:16 do {
 		var temp_right_site = f_function(plain[1], i);
