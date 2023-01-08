@@ -264,7 +264,7 @@ function key_permuted_choice_2(array, round) {
         	else result[1] = result[1] or ((array[0] // 2^(a-28)) and 1) * 2^b;
 		}
     }
-    print(result);
+    keys[round] = result;
 }
 
 function leftshift(key, round) {
