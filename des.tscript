@@ -156,3 +156,19 @@ function column_calculation(input) {
     return column;
 }
 
+function sbox(input,box) {
+    var row = row_calculation(input);
+    var column = column_calculation(input);
+
+    return SBoxes[box][row][column];
+}
+
+function pbox(input) {
+    var result = 0;
+
+    for var i in 0:32 do {
+        result = result or ((input // 2^(32 - PBox[i])) and 1) * 2^(31 - i);
+    }
+
+    return result;
+}
