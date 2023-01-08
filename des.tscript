@@ -236,11 +236,11 @@ function key_permuted_choice_1(array) {
         var b = 55 - i;
 		
         if a < 32 then {
-			if b > 31 then result[0] = result[0] or ((array[1] // 2^a) and 1) * 2^(b-32);
+			if b > 27 then result[0] = result[0] or ((array[1] // 2^a) and 1) * 2^(b-28);
         	else result[1] = result[1] or ((array[1] // 2^a) and 1) * 2^b;
 		}
 		else {
-			if b > 31 then result[0] = result[0] or ((array[0] // 2^(a-32)) and 1) * 2^(b-32);
+			if b > 27 then result[0] = result[0] or ((array[0] // 2^(a-32)) and 1) * 2^(b-28);
         	else result[1] = result[1] or ((array[0] // 2^(a-32)) and 1) * 2^b;
 		}
     }
@@ -255,27 +255,27 @@ function key_permuted_choice_2(array, round) {
 		var a = 56 - permuted_choice_2[i];
         var b = 47 - i;
 		
-		if a < 32 then {
-			if b > 31 then result[0] = result[0] or ((array[1] // 2^a) and 1) * 2^(b-32);
+		if a < 28 then {
+			if b > 23 then result[0] = result[0] or ((array[1] // 2^a) and 1) * 2^(b-24);
         	else result[1] = result[1] or ((array[1] // 2^a) and 1) * 2^b;
 		}
 		else {
-			if b > 31 then result[0] = result[0] or ((array[0] // 2^(a-32)) and 1) * 2^(b-32);
-        	else result[1] = result[1] or ((array[0] // 2^(a-32)) and 1) * 2^b;
+			if b > 23 then result[0] = result[0] or ((array[0] // 2^(a-28)) and 1) * 2^(b-24);
+        	else result[1] = result[1] or ((array[0] // 2^(a-28)) and 1) * 2^b;
 		}
     }
-    keys[round] = result;
+    print(result);
 }
 
 function leftshift(key, round) {
 	var temp = 0;
 	
     if left_shifts[round] == 2 then {
-        temp = temp or ((key * 2^2) and 268435452);
+        temp = temp or ((key * 2^left_shifts[round]) and 268435452);
         temp = temp or (key // 2^26) and 3;
     }
     else {
-        temp = temp or ((key * 2) and 268435454);
+        temp = temp or ((key * 2^left_shifts[round]) and 268435454);
         temp = temp or (key // 2^27) and 1;
 		
     }
@@ -287,7 +287,6 @@ function encryption_key_schedule(key) {
     for var i in 0:16 do {
 		permuted_key[0] = leftshift(permuted_key[0], i);
         permuted_key[1] = leftshift(permuted_key[1], i);
-		print(hex(permuted_key[0]) + " " + hex(permuted_key[1]));
         key_permuted_choice_2(permuted_key, i);
     }
 }
