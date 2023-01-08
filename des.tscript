@@ -172,3 +172,38 @@ function pbox(input) {
 
     return result;
 }
+
+function expansion(plain) {
+    var result = [0,0];
+
+    for var i in 0:48 do {
+		
+		var a = 32 - Ebox[i];
+        var b = 47 - i;
+		
+		if b > 31 then result[0] = result[0] or ((plain // 2^a) and 1) * 2^(b-32);
+        else result[1] = result[1] or ((plain // 2^a) and 1) * 2^b;
+    }
+
+    return result;
+}
+
+function final_permutation(array) {
+    var result = [0,0];
+
+    for var i in 0:64 do {
+		var a = 64 - FPbox[i];
+        var b = 63 - i;
+		
+		if a < 32 then {
+			if b > 31 then result[0] = result[0] or ((array[1] // 2^a) and 1) * 2^(b-32);
+        	else result[1] = result[1] or ((array[1] // 2^a) and 1) * 2^b;
+		}
+		else {
+			if b > 31 then result[0] = result[0] or ((array[0] // 2^(a-32)) and 1) * 2^(b-32);
+        	else result[1] = result[1] or ((array[0] // 2^(a-32)) and 1) * 2^b;
+		}
+    }
+
+    return result;
+}
