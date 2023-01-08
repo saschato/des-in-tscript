@@ -244,9 +244,9 @@ function key_permuted_choice_1(array) {
         	else result[1] = result[1] or ((array[0] // 2^(a-32)) and 1) * 2^b;
 		}
     }
-
     return result;
 }
+
 
 function key_permuted_choice_2(array, round) {
     var result = [0,0];
@@ -277,7 +277,19 @@ function leftshift(key, round) {
     else {
         temp = temp or ((key * 2) and 268435454);
         temp = temp or (key // 2^27);
+		
     }
 
     return temp;
 }
+
+function encryption_key_schedule(key) {
+    var permuted_key = key_permuted_choice_1(key);
+    for var i in 0:16 do {
+		permuted_key[0] = leftshift(permuted_key[0], i);
+        permuted_key[1] = leftshift(permuted_key[1], i);
+        key_permuted_choice_2(permuted_key, i);
+    }
+}
+
+encryption_key_schedule([1234,15]);
