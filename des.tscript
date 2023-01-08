@@ -181,7 +181,7 @@ function expansion(plain) {
 		var a = 32 - Ebox[i];
         var b = 47 - i;
 		
-		if b > 31 then result[0] = result[0] or ((plain // 2^a) and 1) * 2^(b-32);
+		if b > 23 then result[0] = result[0] or ((plain // 2^a) and 1) * 2^(b-24);
         else result[1] = result[1] or ((plain // 2^a) and 1) * 2^b;
 	}
 	
@@ -199,7 +199,7 @@ function f_function(plain, round) {
 		var a = 42 - 6 * i;
 		var input = 0;
 		
-		if a > 31 then input = (expanded[0] // 2^(a-32)) and 63;
+		if a > 23 then input = (expanded[0] // 2^(a-24)) and 63;
 		else input = (expanded[1] // 2^a) and 63;
 		
         result = result or sbox(input, i) * 2^(28 - 4 * i);
@@ -308,10 +308,6 @@ function encrypt(plain,key) {
     encryption_key_schedule(key);
 
     plain = initial_permutation(plain);
-	
-	for var i in 0:16 do {
-		print(hex(keys[i][0]) +  "  " + hex(keys[i][1]));	
-	}
 
     for var i in 0:16 do {
 		var temp_right_site = f_function(plain[1], i);
@@ -320,6 +316,6 @@ function encrypt(plain,key) {
         plain[0] = plain[1];
         plain[1] = temp_left_site;
     }
-
+	print(final_permutation([plain[1],plain[0]]));
 }
 encrypt([1885434739,2003792484],[1885434739,2003792484]);
