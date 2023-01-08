@@ -1,4 +1,4 @@
-var keys = [ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ];
+var keys = [ [0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0] ];
 
 var IPbox = [
         58,50,42,34,26,18,10,2,
@@ -183,9 +183,29 @@ function expansion(plain) {
 		
 		if b > 31 then result[0] = result[0] or ((plain // 2^a) and 1) * 2^(b-32);
         else result[1] = result[1] or ((plain // 2^a) and 1) * 2^b;
+	}
+	
+    return result;
+}
+
+function f_function(plain, round) {
+   	var result = 0;
+    var expanded = expansion(plain);
+	
+	expanded[0] = expanded[0] xor keys[round][0];
+	expanded[1] = expanded[1] xor keys[round][1];
+
+    for var i in 0:8 do {
+		var a = 42 - 6 * i;
+		var input = 0;
+		
+		if a > 31 then input = (expanded[0] // 2^(a-32)) and 63;
+		else input = (expanded[1] // 2^a) and 63;
+		
+        result = result or sbox(input, i) * 2^(28 - 4 * i);
     }
 
-    return result;
+    return pbox(result);
 }
 
 function final_permutation(array) {
@@ -245,4 +265,19 @@ function key_permuted_choice_2(array, round) {
 		}
     }
     keys[round] = result;
+}
+
+function leftshift(key, round) {
+	var temp = 0;
+	
+    if left_shifts[round] == 2 then {
+        temp = temp or ((key * 2^2) and 268435452);
+        temp = temp or (key // 2^26);
+    }
+    else {
+        temp = temp or ((key * 2) and 268435454);
+        temp = temp or (key // 2^27);
+    }
+
+    return temp;
 }
