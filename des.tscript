@@ -130,7 +130,6 @@ function extract(x,i) {
 	}
 }
 
-
 function initial_permutation(plain) {
     var result = [0,0];
 
@@ -145,5 +144,15 @@ function initial_permutation(plain) {
     return result;
 }
 
-print(initial_permutation([1,1]));
+function row_calculation(input) {
+    input = input and 33;
+    var row = ((input // 2^4) and 2) + (input and 1);
+    return row;
+}
+
+function column_calculation(input) {
+    input = input and 30;
+    var column = (input // 2^1) and 15;
+    return column;
+}
 
