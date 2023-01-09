@@ -284,6 +284,19 @@ function encryption_key_schedule(key) {
     }
 }
 
+function hex(inp){
+	var consts = ["0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"];
+	var string = "";
+	for var i in 0:8 do {
+		if inp != 0 and inp != null then {
+			var temp = (inp // 2^(28-4*i)) and 15;
+			string += consts[temp];
+		}
+		else string += "0";
+	}
+	return string;
+}
+
 function encrypt(plain,key) {
 	encryption_key_schedule(key);
 	var array = initial_permutation(plain);
@@ -298,9 +311,9 @@ function encrypt(plain,key) {
 		left = right;
         right = temp_left_site;
 	}
-	print(final_permutation([right,left]));
+	print("0x"+hex(final_permutation([right,left])[0]) + hex(final_permutation([right,left])[1]));
 }
 
-encrypt([1082342894,1708111851],[1082342894,1708111851]);
-
-#[1082342894,1708111851]
+# encrypt(plain,key)
+# encrypt([bit 0 - bit 31, bit 32 - bit 63],[bit 0 - bit 31, bit 32 - bit 63])
+encrypt([1885434739,2003792484],[1885434739,2003792484]);
