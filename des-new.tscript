@@ -144,6 +144,21 @@ function initial_permutation(plain) {
     return result;
 }
 
+function expansion(plain) {
+    var result = [0,0];
+
+    for var i in 0:48 do {
+		
+		var a = 32 - Ebox[i];
+        var b = 47 - i;
+		
+		if b > 23 then result[0] = result[0] or ((plain // 2^a) and 1) * 2^(b-24);
+        else result[1] = result[1] or ((plain // 2^a) and 1) * 2^b;
+	}
+	
+    return result;
+}
+
 function row_calculation(input) {
     input = input and 33;
     var row = ((input // 2^4) and 2) + (input and 1);
