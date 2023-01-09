@@ -192,8 +192,8 @@ function f_function(plain, round) {
    	var result = 0;
     var expanded = expansion(plain);
 	
-	expanded[0] = expanded[0] xor 12983;
-	expanded[1] = expanded[1] xor 12983;
+	expanded[0] = expanded[0] xor keys[round][0];
+	expanded[1] = expanded[1] xor keys[round][1];
 
     for var i in 0:8 do {
 		var a = 42 - 6 * i;
@@ -283,3 +283,24 @@ function encryption_key_schedule(key) {
         key_permuted_choice_2(permuted_key, i);
     }
 }
+
+function encrypt(plain,key) {
+	encryption_key_schedule(key);
+	var array = initial_permutation(plain);
+	
+	var left = array[0];
+	var right = array[1];
+	
+	for var i in 0:16 do {
+		var temp_right_site = f_function(right,i);
+		var temp_left_site = temp_right_site xor left;
+		
+		left = right;
+        right = temp_left_site;
+	}
+	print(final_permutation([right,left]));
+}
+
+encrypt([1082342894,1708111851],[1082342894,1708111851]);
+
+#[1082342894,1708111851]
