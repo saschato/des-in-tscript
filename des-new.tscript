@@ -187,3 +187,23 @@ function pbox(input) {
 
     return result;
 }
+
+function f_function(plain, round) {
+   	var result = 0;
+    var expanded = expansion(plain);
+	
+	expanded[0] = expanded[0] xor 12983;
+	expanded[1] = expanded[1] xor 12983;
+
+    for var i in 0:8 do {
+		var a = 42 - 6 * i;
+		var input = 0;
+		
+		if a > 23 then input = (expanded[0] // 2^(a-24)) and 63;
+		else input = (expanded[1] // 2^a) and 63;
+		
+        result = result or sbox(input, i) * 2^(28 - 4 * i);
+    }
+
+    return pbox(result);
+}
