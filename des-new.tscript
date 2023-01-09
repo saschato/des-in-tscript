@@ -109,12 +109,12 @@ var permuted_choice_1 = [
 ];
 
 var permuted_choice_2 = [
-    14,17,11,24,1,5,3,28,
-    15,6,21,10,23,19,12,4,
-    26,8,16,7,27,20,13,2,
-    41,52,31,37,47,55,30,40,
-    51,45,33,48,44,49,39,56,
-    34,53,46,42,50,36,29,32
+        14,17,11,24,1,5,3,28,
+        15,6,21,10,23,19,12,4,
+        26,8,16,7,27,20,13,2,
+        41,52,31,37,47,55,30,40,
+        51,45,33,48,44,49,39,56,
+        34,53,46,42,50,36,29,32
 ];
 
 var right_shifts = [ 0,1,2,2,2,2,2,2,1,2,2,2,2,2,2,1 ];
@@ -239,4 +239,25 @@ function key_permuted_choice_1(array) {
 		}
     }
     return result;
+}
+
+
+
+function key_permuted_choice_2(array, round) {
+    var result = [0,0];
+
+    for var i in 0:48 do {
+		var a = 56 - permuted_choice_2[i];
+        var b = 47 - i;
+		
+		if a < 28 then {
+			if b > 23 then result[0] = result[0] or ((array[1] // 2^a) and 1) * 2^(b-24);
+        	else result[1] = result[1] or ((array[1] // 2^a) and 1) * 2^b;
+		}
+		else {
+			if b > 23 then result[0] = result[0] or ((array[0] // 2^(a-28)) and 1) * 2^(b-24);
+        	else result[1] = result[1] or ((array[0] // 2^(a-28)) and 1) * 2^b;
+		}
+    }
+    keys[round] = result;
 }
