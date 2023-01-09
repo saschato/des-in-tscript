@@ -207,3 +207,17 @@ function f_function(plain, round) {
 
     return pbox(result);
 }
+
+function final_permutation(plain) {
+    var result = [0,0];
+
+    for var i in 0:64 do  {
+        var a = 64 - FPbox[i];
+        var b = 63 - i;
+
+        if b > 31 then result[0] = result[0] or (extract(plain,a) * 2^(b-32));
+        else result[1] = result[1] or (extract(plain,a) * 2^b);
+    }
+
+    return result;
+}
