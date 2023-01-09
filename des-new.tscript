@@ -241,7 +241,20 @@ function key_permuted_choice_1(array) {
     return result;
 }
 
-
+function leftshift(key, round) {
+	var temp = 0;
+	
+    if left_shifts[round] == 2 then {
+        temp = temp or ((key * 2^left_shifts[round]) and 268435452);
+        temp = temp or (key // 2^26) and 3;
+    }
+    else {
+        temp = temp or ((key * 2^left_shifts[round]) and 268435454);
+        temp = temp or (key // 2^27) and 1;
+		
+    }
+    return temp;
+}
 
 function key_permuted_choice_2(array, round) {
     var result = [0,0];
@@ -260,4 +273,13 @@ function key_permuted_choice_2(array, round) {
 		}
     }
     keys[round] = result;
+}
+
+function encryption_key_schedule(key) {
+    var permuted_key = key_permuted_choice_1(key);
+    for var i in 0:16 do {
+		permuted_key[0] = leftshift(permuted_key[0], i);
+        permuted_key[1] = leftshift(permuted_key[1], i);
+        key_permuted_choice_2(permuted_key, i);
+    }
 }
