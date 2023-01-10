@@ -336,4 +336,3 @@ function encrypt(plain,key) {
 # only use of uppercase letters supported
 # encrypt("70617373776F7264","70617373776F7264") is equivalent to encrypt(b"password",b"password")
 encrypt("70617373776F7264","70617373776F7264");
-
