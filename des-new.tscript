@@ -297,7 +297,25 @@ function hex(inp){
 	return string;
 }
 
+function dec(inp) {
+	var result = 0;
+	var consts = "0123456789ABCDEF";
+	for var i in 0:inp.size() do {
+		for var l in 0:16 do {
+			if inp[i] == consts[l] then result = result + l*16^(7-i);
+		}
+	}
+	return result;
+}
+
+function convert(inp) {
+	return [dec(inp[0:8]),dec(inp[8:16])];
+}
+
 function encrypt(plain,key) {
+	plain = convert(plain);
+	key = convert(key);
+	
 	encryption_key_schedule(key);
 	var array = initial_permutation(plain);
 	
@@ -314,6 +332,8 @@ function encrypt(plain,key) {
 	print("0x"+hex(final_permutation([right,left])[0]) + hex(final_permutation([right,left])[1]));
 }
 
-# encrypt(plain,key)
-# encrypt([bit 0 - bit 31, bit 32 - bit 63],[bit 0 - bit 31, bit 32 - bit 63])
-encrypt([1885434739,2003792484],[1885434739,2003792484]);
+# only 8 byte key and 8 byte plain supported
+# only use of uppercase letters supported
+# encrypt("70617373776F7264","70617373776F7264") is equivalent to encrypt(b"password",b"password")
+encrypt("70617373776F7264","70617373776F7264");
+
